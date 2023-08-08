@@ -29,6 +29,7 @@ function isAuthenticated(req, res, next) {
     const token = authorization.split(' ')[1];
     const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
     req.payload = payload;
+    console.log(req.payload);
   } catch (err) {
     res.status(401);
     if (err.name === 'TokenExpiredError') {
@@ -43,5 +44,5 @@ function isAuthenticated(req, res, next) {
 module.exports = {
   notFound,
   errorHandler,
-  isAuthenticated
+  isAuthenticated,
 };

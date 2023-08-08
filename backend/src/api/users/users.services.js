@@ -25,12 +25,52 @@ function findUserById(id) {
 }
 
 function listAllUsers(){
-    return db.user.findMany()
+    return db.user.findMany({
+      include: {
+        roles: true
+      }
+    })
 }
+
+function isAdmin(userid) {
+  const userWithRoles = db.user.findUnique({
+    where: { id: userid },
+    include: { roles: { where: { name: 'Admin' } } },
+  });
+
+  if (userWithRoles.roles.length > 0) {
+    return true // User is an admin, proceed to the next middleware/route handler
+  } else {
+    return false
+  }
+}
+
+function removeRole(userId, roleName){
+return db.user.update({
+  include:{
+    roles: true
+  },
+  where: { id: userId },
+  data: { roles: { disconnect: { name: roleName } } },
+});
+}
+
+function addRole(userId, roleName){
+  return db.user.update({
+    include:{
+      roles: true
+    },
+    where: { id: userId },
+    data: { roles: { connect: { name: roleName } } },
+  });
+  }
 
 module.exports = {
   findUserByEmail,
   findUserById,
   createUserByEmailAndPassword,
-  listAllUsers
+  listAllUsers,
+  isAdmin,
+  removeRole,
+  addRole
 };

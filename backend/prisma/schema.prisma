@@ -11,12 +11,16 @@ datasource db {
 }
 
 model User {
-  id            String         @id @unique @default(uuid())
-  email         String         @unique
-  password      String
-  refreshTokens RefreshToken[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  id                 String         @id @unique @default(uuid())
+  email              String         @unique
+  password           String
+  refreshTokens      RefreshToken[]
+  roles        Role[]   @relation("UserRoles")
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  workflowsCreatedBy Workflow[]     @relation("WorkflowCreatedBy") // Reverse relationship with created workflows
+  workflowsApproved  Workflow[]     @relation("WorkflowApprovers")
+  requestsApproved   Request[]      @relation("RequestApprovers")
 }
 
 model RefreshToken {
@@ -27,4 +31,47 @@ model RefreshToken {
   revoked     Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Workflow {
+  id        String      @id @unique @default(uuid())
+  title     String
+  name      String
+  desc      String
+  createdBy String   @map("createdBy") // References the User table's id
+  creator   User     @relation("WorkflowCreatedBy", fields: [createdBy], references: [id])
+  approvers User[]   @relation("WorkflowApprovers") // References an array of Users
+  approvalType String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  requests    Request[]
+}
+
+model Request {
+  requestID          Int            @id @default(autoincrement())
+  requestName        String
+  requestDescription String?
+  attachments        String[]
+  workflowType       Workflow      @relation(fields: [workflowType], references: [id])
+  workflowTypeID     String
+  approvedBy         User[]         @relation("RequestApprovers")
+  status             String
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+}
+
+model Role {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  users     User[]   @relation("UserRoles")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ApprovalType{
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  workflows     Workflow[]   @relation("WorkflowType")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
