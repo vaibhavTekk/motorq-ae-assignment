@@ -1,5 +1,7 @@
 const express = require("express");
 const { isAuthenticated } = require("../../middlewares");
+const { isAdmin } = require("../users/users.services");
+
 const { listWorkflows, getWorkflow, createWorkflow } = require("./workflows.services.js");
 
 const router = express.Router();
@@ -15,15 +17,17 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 
 router.post("/", isAuthenticated, async (req, res, next) => {
   const { title, name, desc, approverIDs, approvalType } = req.body;
-  const { createdBy } = req.payload;
+  // const { createdBy } = req.payload;
+  const { userId } = req.payload;
   try {
-    if (isAdmin(currUserID)) {
-      const workflow = await createWorkflow({ ...req.body, createdBy });
-      res.json(user);
+    if (isAdmin(userId)) {
+      const workflow = await createWorkflow({ title, name, desc, userId, approverIDs, approvalType });
+      res.json(workflow);
     } else {
       throw new Error("Not Admin - Access Denied");
     }
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });

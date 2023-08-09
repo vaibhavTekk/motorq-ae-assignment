@@ -12,7 +12,6 @@ app.post("/request", isAuthenticated, async (req, res) => {
       requestDescription,
       attachments,
       workflowType,
-      approvers,
     });
     res.json(createdRequest);
   } catch (error) {

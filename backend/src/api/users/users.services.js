@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt');
-const { db } = require('../../utils/db');
+const bcrypt = require("bcrypt");
+const { db } = require("../../utils/db");
 
 function findUserByEmail(email) {
   return db.user.findUnique({
@@ -21,49 +21,52 @@ function findUserById(id) {
     where: {
       id,
     },
+    include: {
+      roles: true,
+    },
   });
 }
 
-function listAllUsers(){
-    return db.user.findMany({
-      include: {
-        roles: true
-      }
-    })
+function listAllUsers() {
+  return db.user.findMany({
+    include: {
+      roles: true,
+    },
+  });
 }
 
 function isAdmin(userid) {
   const userWithRoles = db.user.findUnique({
     where: { id: userid },
-    include: { roles: { where: { name: 'Admin' } } },
+    include: { roles: { where: { name: "Admin" } } },
   });
 
   if (userWithRoles.roles.length > 0) {
-    return true // User is an admin, proceed to the next middleware/route handler
+    return true; // User is an admin, proceed to the next middleware/route handler
   } else {
-    return false
+    return false;
   }
 }
 
-function removeRole(userId, roleName){
-return db.user.update({
-  include:{
-    roles: true
-  },
-  where: { id: userId },
-  data: { roles: { disconnect: { name: roleName } } },
-});
+function removeRole(userId, roleName) {
+  return db.user.update({
+    include: {
+      roles: true,
+    },
+    where: { id: userId },
+    data: { roles: { disconnect: { name: roleName } } },
+  });
 }
 
-function addRole(userId, roleName){
+function addRole(userId, roleName) {
   return db.user.update({
-    include:{
-      roles: true
+    include: {
+      roles: true,
     },
     where: { id: userId },
     data: { roles: { connect: { name: roleName } } },
   });
-  }
+}
 
 module.exports = {
   findUserByEmail,
@@ -72,5 +75,5 @@ module.exports = {
   listAllUsers,
   isAdmin,
   removeRole,
-  addRole
+  addRole,
 };

@@ -1,11 +1,10 @@
 const { db } = require("../../utils/db");
-
 function listWorkflows() {
   return db.workflow.findMany();
 }
 
 function getWorkflow(id) {
-  const workflow = prisma.workflow.findUnique({
+  const workflow = db.workflow.findUnique({
     where: { id },
   });
   if (!workflow) {
@@ -14,14 +13,16 @@ function getWorkflow(id) {
   return workflow;
 }
 
-function createWorkflow({ title, name, desc, createdBy, approvers, approvalType }) {
-  return prisma.workflow.create({
+function createWorkflow({ title, name, desc, userId, approverIDs, approvalType }) {
+  // console.log(createdBy.userId);
+  console.log(userId);
+  return db.workflow.create({
     data: {
       title,
       name,
       desc,
-      createdBy: { connect: { id: createdBy } },
-      approvers: { connect: approvers.map((approverId) => ({ id: approverId })) },
+      creator: { connect: { id: userId } },
+      approvers: { connect: approverIDs.map((approverId) => ({ id: approverId })) },
       approvalType,
     },
   });
