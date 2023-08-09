@@ -9,7 +9,6 @@ const Dashboard = () => {
   console.log(user);
   return (
     <div>
-      <h1>Welcome to the Dashboard</h1>
 
       {/* Conditionally render sections based on user's roles */}
       {user && user.roles.some((role) => role.name === "Admin") && (

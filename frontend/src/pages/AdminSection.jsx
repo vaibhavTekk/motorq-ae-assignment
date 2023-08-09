@@ -128,10 +128,13 @@ const AdminSection = () => {
       </form>
 
       <div>
-        <h3>Existing Workflows</h3>
+        <h3>Available Workflows</h3>
         <ul>
           {workflows.map((workflow) => (
-            <li key={workflow.id}>{workflow.title}</li>
+            <>
+              <li key={workflow.id}>{workflow.title}</li>
+              <p>{workflow.description}</p>
+            </>
           ))}
         </ul>
       </div>

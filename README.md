@@ -1,3 +1,15 @@
+## MotorQ AE Assignment
+
+## Admin Login
+
+email : admin@example.com
+password: adminpassword
+
+## Requester login
+
+email: requester@example.com
+password: requesterpassword
+
 API ROUTES:
 
 Auth and User:
