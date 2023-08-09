@@ -27,4 +27,4 @@ function createWorkflow({ title, name, desc, createdBy, approvers, approvalType 
   });
 }
 
-module.exports = { listWorkflows };
+module.exports = { listWorkflows, getWorkflow, createWorkflow };

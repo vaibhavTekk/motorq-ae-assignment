@@ -48,11 +48,11 @@ model Workflow {
 }
 
 model Request {
-  requestID          Int            @id @default(autoincrement())
+  requestID          String            @id @unique @default(uuid())
   requestName        String
   requestDescription String?
   attachments        String[]
-  workflowType       Workflow      @relation(fields: [workflowType], references: [id])
+  workflowType       Workflow      @relation(fields: [workflowTypeID], references: [id])
   workflowTypeID     String
   approvedBy         User[]         @relation("RequestApprovers")
   status             String
@@ -68,10 +68,3 @@ model Role {
   updatedAt DateTime @updatedAt
 }
 
-model ApprovalType{
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  workflows     Workflow[]   @relation("WorkflowType")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}

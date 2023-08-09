@@ -7,6 +7,8 @@ Auth and User:
 - [ ] ~~/auth/refresh - refresh existing token~~
 - [ ] /auth/logout - invalidate token / remove token from local storage
 
+DONE
+
 USER Schema:
 Name\
 Email\
@@ -21,6 +23,8 @@ USER API ROUTES:
 - [ ] UPDATE /user/:id/addRole - add specified role to specified user (admin only)
 - [ ] UPDATE /user/:id/removeRole - remove specified role to specified user (admin only)
 
+DONE
+
 WORKFLOW:
 
 - [ ] /workflows/ - get available workflows
@@ -28,15 +32,18 @@ WORKFLOW:
 - [ ] GET /workflow/:id - get details of workflow of specified id
 
 WORKFLOW SCHEMA:
+
 - Workflow ID
 - Workflow name
 - Info
 - Created By
-- Levels
 - Approvers [ ]
 - Approval Type ['Everyone','Atleast Two','Anyone']
 
+DONE
+
 REQUEST SCHEMA:
+
 - requestID
 - request Name
 - request Description
@@ -46,10 +53,11 @@ REQUEST SCHEMA:
 - Status:
 
 API ROUTES:
+
 - [ ] POST /request/ by requester - make it ready for review body contains details
 - [ ] POST /request/:id/accept change status to under Review
 - [ ] POST /request/:id/approve - needs to be under review, add an approval adjacent to approver, if all approvers approved, move to approve
 - [ ] POST /request/:id/reject - needs to be under review - change to reject
-- [ ] POST /request/:id/review - 
+- [ ] POST /request/:id/review -
 - [ ] UPDATE /request/:id - by requester, if under justification required make changes, ready for review
-- [ ] 
+- [ ]
