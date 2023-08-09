@@ -1,6 +1,10 @@
 const { db } = require("../../utils/db");
 function listWorkflows() {
-  return db.workflow.findMany();
+  return db.workflow.findMany({
+    include:{
+      approvers: true
+    }
+  });
 }
 
 function getWorkflow(id) {

@@ -4,7 +4,7 @@ const { db } = require("../../../utils/db.js");
 
 const router = express.Router();
 
-app.post("/request", isAuthenticated, async (req, res) => {
+app.post("/", isAuthenticated, async (req, res) => {
   const { requestName, requestDescription, attachments, workflowType, approvers } = req.body;
   try {
     const createdRequest = await createRequest({

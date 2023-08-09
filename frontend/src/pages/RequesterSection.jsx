@@ -35,11 +35,15 @@ const RequesterSection = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
       });
 
-      const selectedWorkflowType = response.data; // Store the fetched workflow type
+      const selectedWorkflowType = response.data[0]; // Select the first workflow type object from the array
 
-      // Map the array of approvers to get their emails and join them
-      const approversList = selectedWorkflowType.approvers.map((approver) => approver.email).join(", ");
-      setApprovers(approversList);
+      if (selectedWorkflowType) {
+        // Map the array of approvers to get their emails and join them
+        const approversList = selectedWorkflowType.approvers.map((approver) => approver.email).join(", ");
+        setApprovers(approversList);
+      } else {
+        setApprovers("");
+      }
     } catch (error) {
       console.error("Error fetching approvers for workflow:", error);
     }
@@ -52,7 +56,7 @@ const RequesterSection = () => {
     try {
       const accessToken = localStorage.getItem("accessToken"); // Get bearer token from local storage
       const response = await axios.post(
-        "http://localhost:5000/api/v1/requests",
+        "http://localhost:5000/api/v1/requests/",
         {
           requestName,
           requestDescription,
